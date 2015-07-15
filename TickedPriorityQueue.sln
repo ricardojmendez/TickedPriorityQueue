@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TickedPriorityQueue", "TickedPriorityQueue\TickedPriorityQueue.csproj", "{64E866FA-05A0-423C-8D93-C0B32A54769E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TickedPriorityQueue Unit Tests", "TickedPriorityQueue Unit Tests\TickedPriorityQueue Unit Tests.csproj", "{22239D52-EE79-4DCD-A808-F459BFB38DC0}"
