@@ -25,7 +25,7 @@ namespace TickedPriorityQueueUnitTests
             // For items with equal times and priorities, we will state that the
             // item created first is always lower than the second, so that the second is
             // always placed later in the queue
-			a.Priority = b.Priority;
+            a.Priority = b.Priority;
             itemA = new TickedQueueItem(a, time);
             Assert.AreEqual(-1, comparer.Compare(itemB, itemA),
                 "Expected ItemB would be deemed lower - {0}  {1}", itemA, itemB);

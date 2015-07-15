@@ -41,12 +41,12 @@ namespace TickedPriorityQueue
 		/// <summary>
 		/// The queue.
 		/// </summary>
-		private SortedSet<TickedQueueItem> _queue;
+        private SortedSet<TickedQueueItem> _queue;
 		
 		/// <summary>
 		/// Pre-allocated working queue from which items will be evaluated.
 		/// </summary>
-		private List<TickedQueueItem> _workingQueue;
+        private List<TickedQueueItem> _workingQueue;
 
 		/// <summary>
 		/// Gets or sets the exception handler.
@@ -62,9 +62,9 @@ namespace TickedPriorityQueue
 		public TickedQueue()
 		{
 			LoopByDefault = true;
-			_queue = new SortedSet<TickedQueueItem>(new TickedQueueItemComparer());
+            _queue = new SortedSet<TickedQueueItem>(new TickedQueueItemComparer());
 
-			_workingQueue = new List<TickedQueueItem>(PreAllocateSize);
+            _workingQueue = new List<TickedQueueItem>(PreAllocateSize);
 			MaxProcessedPerUpdate = DefaultMaxProcessedPerUpdate;
 			_maxProcessingTimePerUpdate = TimeSpan.FromSeconds(DefaultMaxProcessingTimePerUpdate);
 		}
@@ -179,7 +179,7 @@ namespace TickedPriorityQueue
 		private void Add(TickedQueueItem item, DateTime currentTime)
 		{
 			item.ResetTickFromTime(currentTime);
-			_queue.Add(item);
+            _queue.Add(item);
 		}
 		
 		/// <summary>
