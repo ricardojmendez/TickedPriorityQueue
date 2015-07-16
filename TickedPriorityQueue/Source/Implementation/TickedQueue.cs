@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace TickedPriorityQueue
 {
@@ -40,12 +41,12 @@ namespace TickedPriorityQueue
 		/// <summary>
 		/// The queue.
 		/// </summary>
-		private List<TickedQueueItem> _queue;
+        private SortedSet<TickedQueueItem> _queue;
 		
 		/// <summary>
 		/// Pre-allocated working queue from which items will be evaluated.
 		/// </summary>
-		private List<TickedQueueItem> _workingQueue;
+        private List<TickedQueueItem> _workingQueue;
 
 		/// <summary>
 		/// Gets or sets the exception handler.
@@ -61,8 +62,9 @@ namespace TickedPriorityQueue
 		public TickedQueue()
 		{
 			LoopByDefault = true;
-			_queue = new List<TickedQueueItem>(PreAllocateSize);
-			_workingQueue = new List<TickedQueueItem>(PreAllocateSize);
+            _queue = new SortedSet<TickedQueueItem>(new TickedQueueItemComparer());
+
+            _workingQueue = new List<TickedQueueItem>(PreAllocateSize);
 			MaxProcessedPerUpdate = DefaultMaxProcessedPerUpdate;
 			_maxProcessingTimePerUpdate = TimeSpan.FromSeconds(DefaultMaxProcessingTimePerUpdate);
 		}
@@ -177,13 +179,7 @@ namespace TickedPriorityQueue
 		private void Add(TickedQueueItem item, DateTime currentTime)
 		{
 			item.ResetTickFromTime(currentTime);
-			int index = _queue.BinarySearch(item, new TickedQueueItemComparer());
-			
-			//if the binary search doesn't find something identical, it'll return a
-			//negative value signifying where the new item should reside, so bitflipping
-			//that gives the new index
-			if (index < 0) index = ~index;
-			_queue.Insert(index, item);
+            _queue.Add(item);
 		}
 		
 		/// <summary>
@@ -240,6 +236,8 @@ namespace TickedPriorityQueue
 				if (found > MaxProcessedPerUpdate) break;
 				
 				var item  = _workingQueue[i];
+                
+                
 				if (item.IsActive && item.CheckTickReady(currentTime))
 				{
 					++found;

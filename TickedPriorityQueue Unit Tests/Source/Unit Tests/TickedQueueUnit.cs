@@ -33,6 +33,8 @@ namespace TickedPriorityQueueUnitTests
         public void TestPriority()
         {
             InitializeTestValues();
+            DateTime timeAtStart = DateTime.UtcNow.AddSeconds(-1);
+
             var queue = new TickedQueue();
             var a = new TickedObject(CallbackSetTest1, 0, 0) {Priority = 0};
             var b = new TickedObject(CallbackSetTest1, 0, 2) {Priority = 2};
@@ -43,10 +45,10 @@ namespace TickedPriorityQueueUnitTests
             queue.Add(c);
 
             Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
-            queue.Update();
+            queue.Update(timeAtStart);
             Assert.AreEqual(-1, test1,
                 "test1 should still be same after first update, as none of the objects should have ticked");
-            queue.Update(DateTime.UtcNow.AddSeconds(2));
+            queue.Update(timeAtStart.AddSeconds(2));
             Assert.AreNotEqual(-1, test1, "test1 should have changed after all three items ticked");
             Assert.AreEqual(2, test1, "test1 should have been updated to the last object");
         }
@@ -77,20 +79,22 @@ namespace TickedPriorityQueueUnitTests
             InitializeTestValues();
 
             var queue = new TickedQueue();
-            var a = new TickedObject(CallbackSetTest1, 0);
+            var a = new TickedObject(CallbackSetTest1, 0, 0);
 
             queue.Add(a);
 
+            DateTime startTime = DateTime.UtcNow;
+            
             Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
             queue.IsPaused = true;
-            queue.Update();
+            queue.Update(startTime);
             Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
-            queue.Update(DateTime.UtcNow.AddSeconds(2));
+            queue.Update(startTime.AddSeconds(2));
             Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
 
             queue.IsPaused = false;
-            queue.Update();
-            Assert.AreEqual(-1, test1, "test1 should be set to 0 after the queue is updated");
+            queue.Update(startTime.AddSeconds(3));
+            Assert.AreEqual(0, test1, "test1 should be set to 0 after the queue is updated");
         }
 
         [Test]

@@ -32,19 +32,19 @@ namespace TickedPriorityQueue
 		/// Second Item.
 		/// </param>
 		/// <remarks>
-        /// For items with equal times and priorities, we will state that the
-        /// first item is always lower than the second, so that the second is
-        /// always placed later in the queue.  This means that DefaultCompare
-        /// is non-commutative for these items.
-		/// </remarks>
+        /// For items with equal times and priorities, the creation id is used, so items created second will always come after
+        /// those created first.
+        /// </remarks>
 		public static int DefaultCompare(TickedQueueItem a, TickedQueueItem b)
 		{
 		    var result = a.Priority.CompareTo(b.Priority);
             if (result == 0)
 			{
-				result = a.NextTickTime.CompareTo(b.NextTickTime);
-			    if (result == 0) result = -1;
-			}
+                result = a.NextTickTime.CompareTo(b.NextTickTime);
+                if (result == 0) {
+                    result = a.CreationId.CompareTo(b.CreationId);
+                }
+            }
 		    return result;
 		}
 	}

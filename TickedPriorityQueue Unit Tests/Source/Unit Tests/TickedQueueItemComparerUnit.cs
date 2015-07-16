@@ -21,14 +21,14 @@ namespace TickedPriorityQueueUnitTests
             var comparer = new TickedQueueItemComparer();
             Assert.AreEqual(1, comparer.Compare(itemA, itemB), "Comparison should yield lower for a");
             Assert.AreEqual(-1, comparer.Compare(itemB, itemA), "Reverse comparison should yield lower for b");
-            a.Priority = b.Priority;
-
+            
             // For items with equal times and priorities, we will state that the
-            // first item is always lower than the second, so that the second is
+            // item created first is always lower than the second, so that the second is
             // always placed later in the queue
+            a.Priority = b.Priority;
             itemA = new TickedQueueItem(a, time);
-            Assert.AreEqual(-1, comparer.Compare(itemA, itemB),
-                "Expected ItemA would be deemed lower - {0}  {1}", itemA, itemB);
+            Assert.AreEqual(-1, comparer.Compare(itemB, itemA),
+                "Expected ItemB would be deemed lower - {0}  {1}", itemA, itemB);
         }
 
         [Test]

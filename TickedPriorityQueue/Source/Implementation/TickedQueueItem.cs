@@ -9,6 +9,14 @@ namespace TickedPriorityQueue
 	{
 		private ITicked _ticked;
 		private DateTime _nextTickTime;
+        private long _creationId;
+
+        /// <summary>
+        /// Holds the next value of the creation ID. 
+        /// This could eventually wrap, but TickedQueueItemComparer compares the ticktime before the creation id, 
+        /// so it should have no affect as the ticktime will be changing.
+        /// </summary>
+        private static long nextCreationId = long.MinValue;
 		
 		internal void ResetTickFromTime(DateTime time)
 		{
@@ -45,10 +53,12 @@ namespace TickedPriorityQueue
 		{
             if (ticked == null) throw new ArgumentNullException("Missing a valid ITicked reference");
             _ticked = ticked;
+            _creationId = nextCreationId++;
 			ResetTickFromTime(currentTime);
 			Priority = _ticked.Priority;
 			Loop = isLooped;
 			IsActive = true;
+
 		}
 		
 		
@@ -110,7 +120,15 @@ namespace TickedPriorityQueue
 		{
 			return ticked == _ticked;
 		}
-		
+
+		/// <summary>
+		/// Returns an identifier to allow differentiation between instances with the same priority and ticktime
+		/// </summary>
+		public long CreationId
+		{
+			get { return _creationId; }
+		}
+
 		/// <summary>
 		/// Returns the earliest time the instance can be ticked.
 		/// </summary>
