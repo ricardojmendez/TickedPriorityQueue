@@ -236,6 +236,8 @@ namespace TickedPriorityQueue
 				if (found > MaxProcessedPerUpdate) break;
 				
 				var item  = _workingQueue[i];
+                
+                
 				if (item.IsActive && item.CheckTickReady(currentTime))
 				{
 					++found;

@@ -79,20 +79,22 @@ namespace TickedPriorityQueueUnitTests
             InitializeTestValues();
 
             var queue = new TickedQueue();
-            var a = new TickedObject(CallbackSetTest1, 0);
+            var a = new TickedObject(CallbackSetTest1, 0, 0);
 
             queue.Add(a);
 
+            DateTime startTime = DateTime.UtcNow;
+            
             Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
             queue.IsPaused = true;
-            queue.Update();
+            queue.Update(startTime);
             Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
-            queue.Update(DateTime.UtcNow.AddSeconds(2));
+            queue.Update(startTime.AddSeconds(2));
             Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
 
             queue.IsPaused = false;
-            queue.Update();
-            Assert.AreEqual(-1, test1, "test1 should be set to 0 after the queue is updated");
+            queue.Update(startTime.AddSeconds(3));
+            Assert.AreEqual(0, test1, "test1 should be set to 0 after the queue is updated");
         }
 
         [Test]
